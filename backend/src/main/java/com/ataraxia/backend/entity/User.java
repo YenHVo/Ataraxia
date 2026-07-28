@@ -36,6 +36,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.active = true; 
     }
 
     public Long getId() {
@@ -85,6 +86,17 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", role=" + role +
+                '}';
     }
 
 }
