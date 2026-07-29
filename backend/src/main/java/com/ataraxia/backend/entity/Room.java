@@ -11,7 +11,7 @@ public class Room {
     private Long id;
 
     @Column(nullable = false)
-    private Integer roomNumber;
+    private String roomNumber;
 
     @Column(nullable = false)
     private Integer floor;
@@ -26,7 +26,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(Integer roomNumber, Integer floor, String status, RoomType roomType) {
+    public Room(String roomNumber, Integer floor, String status, RoomType roomType) {
         this.roomNumber = roomNumber;
         this.floor = floor;
         this.status = status;
@@ -37,11 +37,11 @@ public class Room {
         return id;
     }
 
-    public Integer getRoomNumber() {
+    public String getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(Integer roomNumber) {
+    public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
 
