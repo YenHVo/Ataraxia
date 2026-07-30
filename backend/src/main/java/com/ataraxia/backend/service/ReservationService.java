@@ -2,7 +2,10 @@ package com.ataraxia.backend.service;
 
 import com.ataraxia.backend.entity.Reservation;
 import com.ataraxia.backend.repository.ReservationRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -49,7 +52,10 @@ public class ReservationService {
 
     public Reservation updateReservation(Long id, Reservation updatedReservation) {
         Reservation existingReservation = reservationRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Reservation not found"));
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Reservation not found with id: " + id
+            ));
 
         existingReservation.setGuest(updatedReservation.getGuest());
         existingReservation.setRoom(updatedReservation.getRoom());

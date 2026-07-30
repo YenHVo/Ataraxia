@@ -2,7 +2,10 @@ package com.ataraxia.backend.service;
 
 import com.ataraxia.backend.entity.User;
 import com.ataraxia.backend.repository.UserRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -37,8 +40,11 @@ public class UserService {
 
     public User updateUser(Long id, User updatedUser) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found with id: " + id
+            ));
+        
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setPassword(updatedUser.getPassword());
         existingUser.setActive(updatedUser.getActive());

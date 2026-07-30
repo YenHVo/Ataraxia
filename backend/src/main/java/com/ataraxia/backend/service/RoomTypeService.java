@@ -2,7 +2,10 @@ package com.ataraxia.backend.service;
 
 import com.ataraxia.backend.entity.RoomType;
 import com.ataraxia.backend.repository.RoomTypeRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,7 +32,10 @@ public class RoomTypeService {
 
     public RoomType updateRoomType(Long id, RoomType updatedRoomType) {
         RoomType existingRoomType = roomTypeRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Room type not found"));
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Room type not found with id: " + id
+            ));
 
         existingRoomType.setName(updatedRoomType.getName());
         existingRoomType.setBasePrice(updatedRoomType.getBasePrice());

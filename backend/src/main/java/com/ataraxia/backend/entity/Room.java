@@ -2,6 +2,7 @@ package com.ataraxia.backend.entity;
 import com.ataraxia.backend.enums.RoomStatus;
 import jakarta.persistence.*;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "rooms")
@@ -24,6 +25,9 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "roomtype_id")
     private RoomType roomType;
+
+    @OneToMany(mappedBy = "room")
+    private List<Reservation> reservations;
 
     public Room() {
     }

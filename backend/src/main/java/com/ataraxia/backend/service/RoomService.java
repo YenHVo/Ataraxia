@@ -2,7 +2,10 @@ package com.ataraxia.backend.service;
 
 import com.ataraxia.backend.entity.Room;
 import com.ataraxia.backend.repository.RoomRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -37,7 +40,10 @@ public class RoomService {
 
     public Room updateRoom(Long id, Room updatedRoom) {
         Room existingRoom = roomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Room not found with id: " + id
+            ));
 
         existingRoom.setRoomNumber(updatedRoom.getRoomNumber());
         existingRoom.setFloor(updatedRoom.getFloor());

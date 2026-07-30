@@ -20,7 +20,6 @@ public class RoleService {
     }
 
     public Role saveRole(Role role) {
-
         if (roleRepository.findByName(role.getName()).isPresent()) {
             throw new RuntimeException("Role already exists");
         }
