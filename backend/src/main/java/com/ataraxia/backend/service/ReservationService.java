@@ -1,0 +1,65 @@
+package com.ataraxia.backend.service;
+
+import com.ataraxia.backend.entity.Reservation;
+import com.ataraxia.backend.repository.ReservationRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ReservationService {
+
+    public final ReservationRepository reservationRepository;
+
+    public ReservationService(ReservationRepository reservation) {
+        this.reservationRepository = reservation;
+    }
+
+    public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
+
+    public Reservation saveReservation(Reservation reservation) {
+        if (reservationRepository.findById(reservation.getId()).isPresent()) {
+            throw new RuntimeException("Reservation already exists");
+        }
+        
+        return reservationRepository.save(reservation);
+    }
+
+    public Reservation getReservationById(Long id) {
+        return reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("Reservation not found"));
+    }
+
+    public void deleteReservation(Long id) {
+        reservationRepository.deleteById(id);
+    }
+
+    public List<Reservation> getReservationsByGuestId(Long guestId) {
+        return reservationRepository.findByGuest_Id(guestId);
+    }
+
+    public List<Reservation> getReservationsByRoomId(Long roomId) {
+        return reservationRepository.findByRoom_Id(roomId);
+    }
+
+    public List<Reservation> getReservationsByStatus(com.ataraxia.backend.enums.ReservationStatus status) {
+        return reservationRepository.findByStatus(status);
+    }
+
+    public Reservation updateReservation(Long id, Reservation updatedReservation) {
+        Reservation existingReservation = reservationRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Reservation not found"));
+
+        existingReservation.setGuest(updatedReservation.getGuest());
+        existingReservation.setRoom(updatedReservation.getRoom());
+        existingReservation.setCheckInDate(updatedReservation.getCheckInDate());
+        existingReservation.setCheckOutDate(updatedReservation.getCheckOutDate());
+        existingReservation.setStatus(updatedReservation.getStatus());
+        existingReservation.setTotalPrice(updatedReservation.getTotalPrice());
+        existingReservation.setNumberOfGuests(updatedReservation.getNumberOfGuests());
+
+        return reservationRepository.save(existingReservation);
+    }
+    
+}

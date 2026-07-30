@@ -1,4 +1,5 @@
 package com.ataraxia.backend.entity;
+import com.ataraxia.backend.enums.RoomStatus;
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -10,14 +11,15 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String roomNumber;
 
     @Column(nullable = false)
     private Integer floor;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private RoomStatus status;
 
     @ManyToOne
     @JoinColumn(name = "roomtype_id")
@@ -26,7 +28,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(String roomNumber, Integer floor, String status, RoomType roomType) {
+    public Room(String roomNumber, Integer floor, RoomStatus status, RoomType roomType) {
         this.roomNumber = roomNumber;
         this.floor = floor;
         this.status = status;
@@ -53,11 +55,11 @@ public class Room {
         this.floor = floor;
     }
 
-    public String getStatus() {
+    public RoomStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RoomStatus status) {
         this.status = status;
     }
 
