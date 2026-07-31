@@ -2,7 +2,10 @@ package com.ataraxia.backend.service;
 
 import com.ataraxia.backend.entity.Role;
 import com.ataraxia.backend.repository.RoleRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,7 +31,10 @@ public class RoleService {
     }
 
     public Role getRoleById(Long id) {
-        return roleRepository.findById(id).orElseThrow(() -> new RuntimeException("Role not found"));
+        return roleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Role not found with id: " + id
+        ));
     }
 
     public void deleteRole(Long id) {

@@ -31,7 +31,10 @@ public class ReservationService {
     }
 
     public Reservation getReservationById(Long id) {
-        return reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("Reservation not found"));
+        return reservationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Reservation not found with id: " + id
+        ));
     }
 
     public void deleteReservation(Long id) {

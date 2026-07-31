@@ -22,7 +22,10 @@ public class GuestService {
     }
 
     public Guest getGuestById(Long id) {
-        return guestRepository.findById(id).orElseThrow(() -> new RuntimeException("Guest not found"));
+        return guestRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Guest not found with id: " + id
+        ));
     }
 
     public Guest createGuest(Guest guest) {

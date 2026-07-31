@@ -31,7 +31,10 @@ public class RoomService {
     }
 
     public Room getRoomById(Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
+        return roomRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Room not found with id: " + id
+        ));
     }
 
     public void deleteRoom(Long id) {
