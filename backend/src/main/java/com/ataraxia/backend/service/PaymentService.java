@@ -6,6 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ataraxia.backend.entity.Payment;
 import com.ataraxia.backend.repository.PaymentRepository;
+import com.ataraxia.backend.enums.PaymentStatus;
 import java.util.List;
 
 @Service
@@ -35,11 +36,11 @@ public class PaymentService {
                 ));
     }
 
-    public List<Payment> getPaymentsByStatus(com.ataraxia.backend.enums.PaymentStatus status) {
+    public List<Payment> getPaymentsByStatus(PaymentStatus status) {
         return paymentRepository.findByStatus(status);
     }
 
-    public Payment savePayment(Payment payment) {
+    public Payment createPayment(Payment payment) {
         return paymentRepository.save(payment);
     }
 

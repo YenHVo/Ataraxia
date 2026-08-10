@@ -6,6 +6,7 @@ import com.ataraxia.backend.repository.RoomTypeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.ataraxia.backend.enums.RoomStatus;
 
 import java.util.List;
 
@@ -22,8 +23,26 @@ public class RoomTypeService {
         return roomTypeRepository.findAll();
     }
 
-    public RoomType saveRoomType(RoomType roomType) {
-        if (roomTypeRepository.findByName(roomType.getName()).isPresent()) {
+    public RoomType getRoomTypeByName(String name) {
+        return roomTypeRepository.findByNameContainingIgnoreCase(name).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Room type not found with name: " + name
+        ));
+    }
+
+    public RoomType getRoomTypeById(Long id) {
+        return roomTypeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Room type not found with id: " + id
+        ));
+    }
+
+    public List<RoomType> getRoomTypeByCapacity(int capacity) {
+        return roomTypeRepository.findByCapacity(capacity);
+    }
+
+    public RoomType createRoomType(RoomType roomType) {
+        if (roomTypeRepository.findByNameContainingIgnoreCase(roomType.getName()).isPresent()) {
             throw new RuntimeException("Room type already exists");
         }
         
@@ -44,13 +63,6 @@ public class RoomTypeService {
 
         return roomTypeRepository.save(existingRoomType);
 }
-
-    public RoomType getRoomTypeById(Long id) {
-        return roomTypeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Room type not found with id: " + id
-        ));
-    }
 
     public void deleteRoomType(Long id) {
         roomTypeRepository.deleteById(id);

@@ -22,7 +22,7 @@ public class SupplierController {
 
     @PostMapping
     public Supplier createSupplier(@RequestBody Supplier supplier) {
-        return supplierService.saveSupplier(supplier);
+        return supplierService.createSupplier(supplier);
     }
 
     @GetMapping("/{id}")

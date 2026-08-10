@@ -28,6 +28,13 @@ public class GuestService {
         ));
     }
 
+    public Guest getGuestByEmail(String email) {
+        return guestRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Guest not found with email: " + email
+        ));
+    }
+
     public Guest createGuest(Guest guest) {
         return guestRepository.save(guest);
     }

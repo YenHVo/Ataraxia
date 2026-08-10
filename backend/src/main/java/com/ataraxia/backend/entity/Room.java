@@ -16,7 +16,7 @@ public class Room {
     private String roomNumber;
 
     @Column(nullable = false)
-    private Integer floor;
+    private int floor;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

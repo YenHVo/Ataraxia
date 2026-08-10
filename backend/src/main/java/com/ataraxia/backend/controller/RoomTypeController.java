@@ -23,7 +23,7 @@ public class RoomTypeController {
 
     @PostMapping
     public RoomType createRoomType(@RequestBody RoomType roomType) {
-        return roomTypeService.saveRoomType(roomType);
+        return roomTypeService.createRoomType(roomType);
     }
 
     @GetMapping("/{id}")

@@ -21,7 +21,25 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Supplier saveSupplier(Supplier supplier) {
+    public Supplier getSupplierById(Long id) {
+        return supplierRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Supplier not found with id: " + id
+        ));
+    }
+
+    public Supplier getSupplierByEmail(String email) {
+        return supplierRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Supplier not found with email: " + email
+        ));
+    }
+
+    public List<Supplier> getSuppliersByName(String name) {
+        return supplierRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public Supplier createSupplier(Supplier supplier) {
         if (supplierRepository.findByEmail(supplier.getEmail()).isPresent()) {
             throw new RuntimeException("Supplier already exists");
         }
@@ -42,13 +60,6 @@ public class SupplierService {
         existingSupplier.setAddress(updatedSupplier.getAddress());
 
         return supplierRepository.save(existingSupplier);
-}
-
-    public Supplier getSupplierById(Long id) {
-        return supplierRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Supplier not found with id: " + id
-        ));
     }
 
     public void deleteSupplier(Long id) {

@@ -29,7 +29,7 @@ public class Reservation {
     private Double totalPrice;
 
     @Column (nullable = false)
-    private Integer numberOfGuests;
+    private int numberOfGuests;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

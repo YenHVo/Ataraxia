@@ -22,19 +22,23 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "User not found with id: " + id
+        ));
+    }
+
+    public List<User> getUsersByRole(String roleName) {
+        return userRepository.findByRoleNameContainingIgnoreCase(roleName);
+    }
+
     public User createUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("User already exists");
         }
         
         return userRepository.save(user);
-    }
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "User not found with id: " + id
-        ));
     }
 
     public void deleteUser(Long id) {

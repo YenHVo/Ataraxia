@@ -23,7 +23,7 @@ public class RoleController {
 
     @PostMapping
     public Role createRole(@RequestBody Role role) {
-        return roleService.saveRole(role);
+        return roleService.createRole(role);
     }
 
     @GetMapping("/{id}")

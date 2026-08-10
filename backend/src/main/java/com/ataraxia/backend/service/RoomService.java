@@ -6,6 +6,7 @@ import com.ataraxia.backend.repository.RoomRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.ataraxia.backend.enums.RoomStatus;
 
 import java.util.List;
 
@@ -22,14 +23,6 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Room createRoom(Room room) {
-        if (roomRepository.findByRoomNumber(room.getRoomNumber()).isPresent()) {
-            throw new RuntimeException("Room already exists");
-        }
-        
-        return roomRepository.save(room);
-    }
-
     public Room getRoomById(Long id) {
         return roomRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND,
@@ -37,8 +30,35 @@ public class RoomService {
         ));
     }
 
+    public Room getRoomByRoomNumber(String roomNumber) {
+        return roomRepository.findByRoomNumber(roomNumber).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Room not found with room number: " + roomNumber
+        ));
+    }
+
+    public List<Room> getRoomsByStatus(RoomStatus status) {
+        return roomRepository.findByStatus(status);
+    }
+
+    public List<Room> getRoomsByType(String type) {
+        return roomRepository.findByRoomType(type);
+    }
+
+    public List<Room> getRoomsByFloor(int floor) {
+        return roomRepository.findByFloor(floor);
+    }
+
     public void deleteRoom(Long id) {
         roomRepository.deleteById(id);
+    }
+
+    public Room createRoom(Room room) {
+        if (roomRepository.findByRoomNumber(room.getRoomNumber()).isPresent()) {
+            throw new RuntimeException("Room already exists");
+        }
+        
+        return roomRepository.save(room);
     }
 
     public Room updateRoom(Long id, Room updatedRoom) {

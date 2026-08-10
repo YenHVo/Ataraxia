@@ -23,7 +23,7 @@ public class RoomType {
     private Double basePrice;
 
     @Column (nullable = false)
-    private Integer capacity;
+    private int capacity;
 
     @OneToMany(mappedBy = "roomType")
     private List<Room> rooms = new ArrayList<>();

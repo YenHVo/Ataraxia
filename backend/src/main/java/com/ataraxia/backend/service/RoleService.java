@@ -22,19 +22,26 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Role saveRole(Role role) {
-        if (roleRepository.findByName(role.getName()).isPresent()) {
-            throw new RuntimeException("Role already exists");
-        }
-        
-        return roleRepository.save(role);
-    }
-
     public Role getRoleById(Long id) {
         return roleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "Role not found with id: " + id
         ));
+    }
+
+    public Role getRoleByName(String name) {
+        return roleRepository.findByNameContainingIgnoreCase(name).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Role not found with name: " + name
+        ));
+    }
+
+    public Role createRole(Role role) {
+        if (roleRepository.findByNameContainingIgnoreCase(role.getName()).isPresent()) {
+            throw new RuntimeException("Role already exists");
+        }
+        
+        return roleRepository.save(role);
     }
 
     public void deleteRole(Long id) {

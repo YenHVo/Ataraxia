@@ -5,10 +5,8 @@ import java.util.Optional;
 import java.util.List;
 
 public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
-    Optional<RoomType> findByName(String name);
+    Optional<RoomType> findByNameContainingIgnoreCase(String name);
 
-    List<RoomType> findByStatus(String status);
-
-    List<RoomType> findByCapacity(Integer capacity);
+    List<RoomType> findByCapacity(int capacity);
 
 }

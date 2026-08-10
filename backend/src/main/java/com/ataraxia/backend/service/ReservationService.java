@@ -6,6 +6,7 @@ import com.ataraxia.backend.repository.ReservationRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.ataraxia.backend.enums.ReservationStatus;
 
 import java.util.List;
 
@@ -22,23 +23,11 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public Reservation saveReservation(Reservation reservation) {
-        if (reservationRepository.findById(reservation.getId()).isPresent()) {
-            throw new RuntimeException("Reservation already exists");
-        }
-        
-        return reservationRepository.save(reservation);
-    }
-
     public Reservation getReservationById(Long id) {
         return reservationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "Reservation not found with id: " + id
         ));
-    }
-
-    public void deleteReservation(Long id) {
-        reservationRepository.deleteById(id);
     }
 
     public List<Reservation> getReservationsByGuestId(Long guestId) {
@@ -49,8 +38,20 @@ public class ReservationService {
         return reservationRepository.findByRoom_Id(roomId);
     }
 
-    public List<Reservation> getReservationsByStatus(com.ataraxia.backend.enums.ReservationStatus status) {
+    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
         return reservationRepository.findByStatus(status);
+    }
+
+    public void deleteReservation(Long id) {
+        reservationRepository.deleteById(id);
+    }
+
+    public Reservation createReservation(Reservation reservation) {
+        if (reservationRepository.findById(reservation.getId()).isPresent()) {
+            throw new RuntimeException("Reservation already exists");
+        }
+        
+        return reservationRepository.save(reservation);
     }
 
     public Reservation updateReservation(Long id, Reservation updatedReservation) {
