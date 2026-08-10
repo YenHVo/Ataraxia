@@ -30,6 +30,16 @@ public class SupplierController {
         return supplierService.getSupplierById(id);
     }
 
+    @GetMapping("/name/{name}")
+    public List<Supplier> getSupplierByName(@PathVariable String name) {
+        return supplierService.getSupplierByName(name);
+    }
+
+    @GetMapping("/email/{email}")
+    public Supplier getSupplierByEmail(@PathVariable String email) {
+        return supplierService.getSupplierByEmail(email);
+    }
+
     @PutMapping("/{id}")
     public Supplier updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
         return supplierService.updateSupplier(id, supplier);

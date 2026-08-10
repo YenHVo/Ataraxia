@@ -5,6 +5,9 @@ import com.ataraxia.backend.service.PaymentService;
 import com.ataraxia.backend.entity.Payment;
 import java.util.List;
 
+import com.ataraxia.backend.enums.PaymentStatus;
+
+
 @RestController
 @RequestMapping("/api/payments")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -25,6 +28,17 @@ public class PaymentController {
     public Payment getPaymentById(@PathVariable Long id) {
         return paymentService.getPaymentById(id);
     }
+
+    @GetMapping("/reservation/{reservationId}")
+    public Payment getPaymentByReservationId(@PathVariable Long reservationId) {
+        return paymentService.getPaymentByReservationId(reservationId);
+    }
+
+    @GetMapping("/status/{status}")
+    public List<Payment> getPaymentsByStatus(@PathVariable PaymentStatus status) {
+        return paymentService.getPaymentsByStatus(status);
+    }
+    
 
     @PostMapping
     public Payment createPayment(@RequestBody Payment payment) {

@@ -4,6 +4,9 @@ import com.ataraxia.backend.entity.RoomType;
 import com.ataraxia.backend.service.RoomTypeService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/room-types")
@@ -29,6 +32,16 @@ public class RoomTypeController {
     @GetMapping("/{id}")
     public RoomType getRoomTypeById(@PathVariable Long id) {
         return roomTypeService.getRoomTypeById(id);
+    }
+
+    @GetMapping("/name/{name}")
+    public RoomType getRoomTypeByName(@PathVariable String name) {
+        return roomTypeService.getRoomTypeByName(name);
+    }
+
+    @GetMapping("/capacity/{capacity}")
+    public List<RoomType> getRoomTypeByCapacity(@PathVariable int capacity) {
+        return roomTypeService.getRoomTypeByCapacity(capacity);
     }
 
     @PutMapping("/{id}")

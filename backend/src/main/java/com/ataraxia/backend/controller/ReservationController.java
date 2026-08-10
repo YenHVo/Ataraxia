@@ -4,6 +4,7 @@ import com.ataraxia.backend.entity.Reservation;
 import com.ataraxia.backend.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.ataraxia.backend.enums.ReservationStatus;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -21,14 +22,29 @@ public class ReservationController {
         return reservationService.getAllReservations();
     }
 
-    @PostMapping
-    public Reservation createReservation(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
-    }
-
     @GetMapping("/{id}")
     public Reservation getReservationById(@PathVariable Long id) {
         return reservationService.getReservationById(id);
+    }
+
+    @GetMapping("/guest/{guestId}")
+    public List<Reservation> getReservationsByGuestId(@PathVariable Long guestId) {
+        return reservationService.getReservationsByGuestId(guestId);
+    }
+
+    @GetMapping("/room/{roomId}")
+    public List<Reservation> getReservationsByRoomId(@PathVariable Long roomId) {
+        return reservationService.getReservationsByRoomId(roomId);
+    }
+
+    @GetMapping("/status/{status}")
+    public List<Reservation> getReservationsByStatus(@PathVariable ReservationStatus status) {
+        return reservationService.getReservationsByStatus(status);
+    }
+
+    @PostMapping
+    public Reservation createReservation(@RequestBody Reservation reservation) {
+        return reservationService.createReservation(reservation);
     }
 
     @PutMapping("/{id}")

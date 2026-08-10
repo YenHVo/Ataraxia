@@ -29,6 +29,13 @@ public class UserService {
         ));
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "User not found with email: " + email
+        ));
+    }
+
     public List<User> getUsersByRole(String roleName) {
         return userRepository.findByRoleNameContainingIgnoreCase(roleName);
     }

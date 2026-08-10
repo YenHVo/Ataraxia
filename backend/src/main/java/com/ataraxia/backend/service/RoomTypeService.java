@@ -6,7 +6,6 @@ import com.ataraxia.backend.repository.RoomTypeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import com.ataraxia.backend.enums.RoomStatus;
 
 import java.util.List;
 

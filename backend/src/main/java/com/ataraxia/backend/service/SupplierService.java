@@ -35,7 +35,7 @@ public class SupplierService {
         ));
     }
 
-    public List<Supplier> getSuppliersByName(String name) {
+    public List<Supplier> getSupplierByName(String name) {
         return supplierRepository.findByNameContainingIgnoreCase(name);
     }
 

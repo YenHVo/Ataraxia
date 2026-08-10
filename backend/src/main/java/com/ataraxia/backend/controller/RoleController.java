@@ -21,14 +21,19 @@ public class RoleController {
         return roleService.getAllRoles();
     }
 
-    @PostMapping
-    public Role createRole(@RequestBody Role role) {
-        return roleService.createRole(role);
-    }
-
     @GetMapping("/{id}")
     public Role getRoleById(@PathVariable Long id) {
         return roleService.getRoleById(id);
+    }
+
+    @GetMapping("/name/{name}")
+    public Role getRoleByName(@PathVariable String name) {
+        return roleService.getRoleByName(name);
+    }
+
+    @PostMapping
+    public Role createRole(@RequestBody Role role) {
+        return roleService.createRole(role);
     }
 
     @DeleteMapping("/{id}")

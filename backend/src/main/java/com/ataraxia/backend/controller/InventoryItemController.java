@@ -2,7 +2,8 @@ package com.ataraxia.backend.controller;
 import org.springframework.web.bind.annotation.*;
 import com.ataraxia.backend.entity.InventoryItem;
 import com.ataraxia.backend.service.InventoryItemService;
-import java.util.List;  
+import java.util.List;
+import com.ataraxia.backend.enums.InventoryCategory;
 
 @RestController
 @RequestMapping("/api/inventory-items")
@@ -23,6 +24,21 @@ public class InventoryItemController {
     @GetMapping("/{id}")
     public InventoryItem getInventoryItemById(@PathVariable Long id) {
         return inventoryItemService.getInventoryItemById(id);
+    }
+
+    @GetMapping("/category/{category}")
+    public List<InventoryItem> getInventoryItemsByCategory(@PathVariable InventoryCategory category) {
+        return inventoryItemService.getInventoryItemsByCategory(category);
+    }
+
+    @GetMapping("/supplier/{supplierId}")
+    public List<InventoryItem> getInventoryItemsBySupplierId(@PathVariable Long supplierId) {
+        return inventoryItemService.getInventoryItemsBySupplierId(supplierId);
+    }
+
+    @GetMapping("/low-stock")
+    public List<InventoryItem> getInventoryItemsBelowReorderLevel() {
+        return inventoryItemService.getItemsBelowReorderLevel();
     }
 
     @PostMapping

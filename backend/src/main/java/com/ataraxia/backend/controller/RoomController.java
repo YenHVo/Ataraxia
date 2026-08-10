@@ -4,6 +4,7 @@ import com.ataraxia.backend.entity.Room;
 import com.ataraxia.backend.service.RoomService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.ataraxia.backend.enums.RoomStatus;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -20,6 +21,31 @@ public class RoomController {
         return roomService.getAllRooms();
     }
 
+    @GetMapping("/{id}")
+    public Room getRoomById(@PathVariable Long id) {
+        return roomService.getRoomById(id);
+    }
+
+    @GetMapping("/number/{roomNumber}")
+    public Room getRoomByRoomNumber(@PathVariable String roomNumber) {
+        return roomService.getRoomByRoomNumber(roomNumber);
+    }
+
+    @GetMapping("/type/{roomType}")
+    public List<Room> getRoomsByType(@PathVariable String roomType) {
+        return roomService.getRoomsByType(roomType);
+    }
+
+    @GetMapping("/status/{status}")
+    public List<Room> getRoomsByStatus(@PathVariable RoomStatus status) {
+        return roomService.getRoomsByStatus(status);
+    }
+
+    @GetMapping("/floor/{floor}")
+    public List<Room> getRoomsByFloor(@PathVariable int floor) {
+        return roomService.getRoomsByFloor(floor);
+    }
+
     @PostMapping
     public Room createRoom(@RequestBody Room room) {
         return roomService.createRoom(room);
@@ -28,11 +54,6 @@ public class RoomController {
     @PutMapping("/{id}")
     public Room updateRoom(@PathVariable Long id, @RequestBody Room updatedRoom) {
         return roomService.updateRoom(id, updatedRoom);
-    }
-
-    @GetMapping("/{id}")
-    public Room getRoomById(@PathVariable Long id) {
-        return roomService.getRoomById(id);
     }
 
     @DeleteMapping("/{id}")
