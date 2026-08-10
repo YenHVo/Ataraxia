@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class SupplierService {
 
-    public final SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
 
     public SupplierService(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;

@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class ReservationService {
 
-    public final ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
 
     public ReservationService(ReservationRepository reservation) {
         this.reservationRepository = reservation;

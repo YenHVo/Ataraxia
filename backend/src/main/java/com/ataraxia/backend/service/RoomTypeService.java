@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class RoomTypeService {
 
-    public final RoomTypeRepository roomTypeRepository;
+    private final RoomTypeRepository roomTypeRepository;
 
     public RoomTypeService(RoomTypeRepository roomTypeRepository) {
         this.roomTypeRepository = roomTypeRepository;
