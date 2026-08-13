@@ -31,7 +31,7 @@ public class Employee {
     @Column (nullable = false)
     private String position;
 
-    @Column (nullable = false)
+    @Column
     private Double salary;
 
     @OneToOne
