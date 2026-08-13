@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "roles")
@@ -19,6 +20,7 @@ public class Role {
     private String description; 
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<User> users = new ArrayList<>();
 
     public Role() {
