@@ -28,7 +28,7 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     @Column (nullable = false)
-    private PaymentStatus paymentStatus;
+    private PaymentStatus status;
 
     @Column (nullable = false, updatable = false)
     private LocalDateTime paymentDate;
@@ -44,7 +44,7 @@ public class Payment {
         this.amount = amount;
         this.paymentMethod = method;
         this.reservation = reservation;
-        this.paymentStatus = status;
+        this.status = status;
     }
 
     @PrePersist
@@ -73,11 +73,11 @@ public class Payment {
     }
 
     public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+        return status;
     }
 
     public void setPaymentStatus(PaymentStatus status) {
-        this.paymentStatus = status;
+        this.status = status;
     }
 
     public LocalDateTime getPaymentDate() {
@@ -111,7 +111,7 @@ public class Payment {
                 "id=" + id +
                 ", amount=" + amount +
                 ", method='" + paymentMethod + '\'' +
-                ", status='" + paymentStatus + '\'' +
+                ", status='" + status + '\'' +
                 ", paymentDate=" + paymentDate +
                 ", reservation=" + reservation +
                 '}';
