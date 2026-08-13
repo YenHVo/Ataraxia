@@ -36,6 +36,10 @@ public class GuestService {
     }
 
     public Guest createGuest(Guest guest) {
+        if (guestRepository.findByEmail(guest.getEmail()).isPresent()) {
+            throw new RuntimeException("Guest already exists");
+        }
+
         return guestRepository.save(guest);
     }
 

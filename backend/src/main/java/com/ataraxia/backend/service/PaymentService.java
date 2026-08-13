@@ -5,16 +5,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ataraxia.backend.entity.Payment;
+import com.ataraxia.backend.entity.Reservation;
 import com.ataraxia.backend.repository.PaymentRepository;
 import com.ataraxia.backend.enums.PaymentStatus;
+import com.ataraxia.backend.repository.ReservationRepository;
 import java.util.List;
 
 @Service
 public class PaymentService {
     private final PaymentRepository paymentRepository;
+    private final ReservationRepository reservationRepository;
 
-    public PaymentService(PaymentRepository paymentRepository) {
+    public PaymentService(PaymentRepository paymentRepository, ReservationRepository reservationRepository) {
         this.paymentRepository = paymentRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     public List<Payment> getAllPayments() {
@@ -41,6 +45,14 @@ public class PaymentService {
     }
 
     public Payment createPayment(Payment payment) {
+        if (paymentRepository.findById(payment.getId()).isPresent()) {
+            throw new RuntimeException("Payment already exists");
+        }
+
+        Reservation reservation = reservationRepository.findById(payment.getReservation().getId())
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+
+        payment.setReservation(reservation);
         return paymentRepository.save(payment);
     }
 

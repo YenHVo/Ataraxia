@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ataraxia.backend.entity.Employee;
+import com.ataraxia.backend.entity.User;
+import com.ataraxia.backend.repository.UserRepository;
 import com.ataraxia.backend.repository.EmployeeRepository;
 import java.util.List;
 
@@ -13,8 +15,11 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    private final UserRepository userRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository, UserRepository userRepository) {
         this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Employee> getAllEmployees() {
@@ -37,6 +42,14 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
+        Long userId = employee.getUser().getId();
+
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException(
+                    "User not found with id: " + userId
+            ));
+
+        employee.setUser(user);
         return employeeRepository.save(employee);
     }
 

@@ -5,6 +5,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ataraxia.backend.entity.InventoryTransaction;
 import com.ataraxia.backend.repository.InventoryTransactionRepository;
+import com.ataraxia.backend.entity.Employee;
+import com.ataraxia.backend.repository.EmployeeRepository;
+import com.ataraxia.backend.entity.InventoryItem;
+import com.ataraxia.backend.repository.InventoryItemRepository;
 import java.util.List;
 import com.ataraxia.backend.enums.TransactionType;
 import java.time.LocalDate;
@@ -14,8 +18,14 @@ public class InventoryTransactionService {
     
     private final InventoryTransactionRepository inventoryTransactionRepository;
 
-    public InventoryTransactionService(InventoryTransactionRepository inventoryTransactionRepository) {
+    private final EmployeeRepository employeeRepository;
+
+    private final InventoryItemRepository inventoryItemRepository;
+
+    public InventoryTransactionService(InventoryTransactionRepository inventoryTransactionRepository, EmployeeRepository employeeRepository, InventoryItemRepository inventoryItemRepository) {
         this.inventoryTransactionRepository = inventoryTransactionRepository;
+        this.employeeRepository = employeeRepository;
+        this.inventoryItemRepository = inventoryItemRepository;
     }
 
     public List<InventoryTransaction> getAllInventoryTransactions() {
@@ -46,6 +56,18 @@ public class InventoryTransactionService {
     }
 
     public InventoryTransaction createInventoryTransaction(InventoryTransaction inventoryTransaction) {
+        if (inventoryTransactionRepository.findById(inventoryTransaction.getId()).isPresent()) {
+            throw new RuntimeException("Inventory Transaction already exists");
+        }
+
+        Employee employee = employeeRepository.findById(inventoryTransaction.getEmployee().getId())
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        InventoryItem inventoryItem = inventoryItemRepository.findById(inventoryTransaction.getInventoryItem().getId())
+                .orElseThrow(() -> new RuntimeException("Inventory Item not found"));
+
+        inventoryTransaction.setInventoryItem(inventoryItem);
+        inventoryTransaction.setEmployee(employee);
         return inventoryTransactionRepository.save(inventoryTransaction);
     }
 

@@ -5,6 +5,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ataraxia.backend.entity.InventoryItem;
 import com.ataraxia.backend.repository.InventoryItemRepository;
+import com.ataraxia.backend.repository.SupplierRepository;
+import com.ataraxia.backend.entity.Supplier;
 import java.util.List;
 import com.ataraxia.backend.enums.InventoryCategory;
 
@@ -13,8 +15,11 @@ public class InventoryItemService {
     
     private final InventoryItemRepository inventoryItemRepository;
 
-    public InventoryItemService(InventoryItemRepository inventoryItemRepository) {
+    private final SupplierRepository supplierRepository;
+
+    public InventoryItemService(InventoryItemRepository inventoryItemRepository, SupplierRepository supplierRepository) {
         this.inventoryItemRepository = inventoryItemRepository;
+        this.supplierRepository = supplierRepository;
     }
 
     public List<InventoryItem> getAllInventoryItems() {
@@ -41,6 +46,14 @@ public class InventoryItemService {
     }
 
     public InventoryItem createInventoryItem(InventoryItem inventoryItem) {
+        if (inventoryItemRepository.findById(inventoryItem.getId()).isPresent()) {
+            throw new RuntimeException("Inventory item already exists");
+        }
+
+        Supplier supplier = supplierRepository.findById(inventoryItem.getSupplier().getId())
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        inventoryItem.setSupplier(supplier);
         return inventoryItemRepository.save(inventoryItem);
     }
 

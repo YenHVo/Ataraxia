@@ -2,6 +2,8 @@ package com.ataraxia.backend.service;
 
 import com.ataraxia.backend.entity.Room;
 import com.ataraxia.backend.repository.RoomRepository;
+import com.ataraxia.backend.repository.RoomTypeRepository;
+import com.ataraxia.backend.entity.RoomType;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,11 @@ public class RoomService {
     
     private final RoomRepository roomRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    private final RoomTypeRepository roomTypeRepository;
+
+    public RoomService(RoomRepository roomRepository, RoomTypeRepository roomTypeRepository) {
         this.roomRepository = roomRepository;
+        this.roomTypeRepository = roomTypeRepository;
     }
 
     public List<Room> getAllRooms() {
@@ -57,7 +62,11 @@ public class RoomService {
         if (roomRepository.findByRoomNumber(room.getRoomNumber()).isPresent()) {
             throw new RuntimeException("Room already exists");
         }
-        
+
+        RoomType roomType = roomTypeRepository.findById(room.getRoomType().getId())
+                .orElseThrow(() -> new RuntimeException("Room Type not found"));
+
+        room.setRoomType(roomType);
         return roomRepository.save(room);
     }
 

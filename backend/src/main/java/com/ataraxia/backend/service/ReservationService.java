@@ -1,12 +1,16 @@
 package com.ataraxia.backend.service;
 
+import com.ataraxia.backend.entity.Guest;
 import com.ataraxia.backend.entity.Reservation;
+import com.ataraxia.backend.entity.Room;
 import com.ataraxia.backend.repository.ReservationRepository;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.ataraxia.backend.enums.ReservationStatus;
+import com.ataraxia.backend.repository.GuestRepository;
+import com.ataraxia.backend.repository.RoomRepository;
 
 import java.util.List;
 
@@ -15,8 +19,14 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
-    public ReservationService(ReservationRepository reservation) {
-        this.reservationRepository = reservation;
+    private final GuestRepository guestRepository;
+
+    private final RoomRepository roomRepository;
+
+    public ReservationService(ReservationRepository reservationRepository, GuestRepository guestRepository, RoomRepository roomRepository) {
+        this.reservationRepository = reservationRepository;
+        this.guestRepository = guestRepository;
+        this.roomRepository = roomRepository;
     }
 
     public List<Reservation> getAllReservations() {
@@ -50,6 +60,15 @@ public class ReservationService {
         if (reservationRepository.findById(reservation.getId()).isPresent()) {
             throw new RuntimeException("Reservation already exists");
         }
+
+        Guest guest = guestRepository.findById(reservation.getGuest().getId())
+                .orElseThrow(() -> new RuntimeException("Guest not found"));
+
+        Room room = roomRepository.findById(reservation.getRoom().getId())
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+
+        reservation.setGuest(guest);
+        reservation.setRoom(room);
         
         return reservationRepository.save(reservation);
     }
