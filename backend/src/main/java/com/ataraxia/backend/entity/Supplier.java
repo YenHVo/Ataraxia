@@ -1,6 +1,9 @@
 package com.ataraxia.backend.entity;
 import jakarta.persistence.*;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class Supplier {
     private String address;
 
     @OneToMany(mappedBy = "supplier")
+    @JsonIgnore
     private List<InventoryItem> inventoryItems = new ArrayList<>();
 
     public Supplier() {

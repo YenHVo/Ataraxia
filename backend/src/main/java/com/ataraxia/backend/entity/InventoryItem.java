@@ -24,7 +24,7 @@ public class InventoryItem {
     private InventoryCategory category;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @Column(nullable = false)
     private BigDecimal unitCost;
@@ -34,7 +34,7 @@ public class InventoryItem {
     private InventoryUnit unit;
 
     @Column(nullable = false)
-    private int reorderLevel;
+    private Integer reorderLevel;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
@@ -43,7 +43,7 @@ public class InventoryItem {
     public InventoryItem() {
     }
 
-    public InventoryItem(String name, String description, InventoryCategory category, int quantity, BigDecimal unitCost, InventoryUnit unit, int reorderLevel, Supplier supplier) {
+    public InventoryItem(String name, String description, InventoryCategory category, Integer quantity, BigDecimal unitCost, InventoryUnit unit, Integer reorderLevel, Supplier supplier) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -82,11 +82,11 @@ public class InventoryItem {
         this.category = category;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -106,11 +106,11 @@ public class InventoryItem {
         this.unit = unit;
     }
 
-    public int getReorderLevel() {
+    public Integer getReorderLevel() {
         return reorderLevel;
     }
 
-    public void setReorderLevel(int reorderLevel) {
+    public void setReorderLevel(Integer reorderLevel) {
         this.reorderLevel = reorderLevel;
     }
 

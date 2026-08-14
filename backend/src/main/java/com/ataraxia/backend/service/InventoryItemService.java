@@ -46,10 +46,6 @@ public class InventoryItemService {
     }
 
     public InventoryItem createInventoryItem(InventoryItem inventoryItem) {
-        if (inventoryItemRepository.findById(inventoryItem.getId()).isPresent()) {
-            throw new RuntimeException("Inventory item already exists");
-        }
-
         Supplier supplier = supplierRepository.findById(inventoryItem.getSupplier().getId())
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 

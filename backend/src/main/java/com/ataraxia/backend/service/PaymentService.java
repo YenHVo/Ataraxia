@@ -45,10 +45,6 @@ public class PaymentService {
     }
 
     public Payment createPayment(Payment payment) {
-        if (paymentRepository.findById(payment.getId()).isPresent()) {
-            throw new RuntimeException("Payment already exists");
-        }
-
         Reservation reservation = reservationRepository.findById(payment.getReservation().getId())
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
 

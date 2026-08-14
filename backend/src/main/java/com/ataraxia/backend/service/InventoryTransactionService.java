@@ -56,9 +56,6 @@ public class InventoryTransactionService {
     }
 
     public InventoryTransaction createInventoryTransaction(InventoryTransaction inventoryTransaction) {
-        if (inventoryTransactionRepository.findById(inventoryTransaction.getId()).isPresent()) {
-            throw new RuntimeException("Inventory Transaction already exists");
-        }
 
         Employee employee = employeeRepository.findById(inventoryTransaction.getEmployee().getId())
                 .orElseThrow(() -> new RuntimeException("Employee not found"));

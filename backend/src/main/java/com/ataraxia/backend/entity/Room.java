@@ -1,5 +1,7 @@
 package com.ataraxia.backend.entity;
 import com.ataraxia.backend.enums.RoomStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import java.util.Objects;
 import java.util.List;
@@ -16,7 +18,7 @@ public class Room {
     private String roomNumber;
 
     @Column(nullable = false)
-    private int floor;
+    private Integer floor;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -27,6 +29,7 @@ public class Room {
     private RoomType roomType;
 
     @OneToMany(mappedBy = "room")
+    @JsonIgnore
     private List<Reservation> reservations;
 
     public Room() {

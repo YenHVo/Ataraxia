@@ -1,6 +1,9 @@
 package com.ataraxia.backend.entity;
 import jakarta.persistence.*;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 @Entity
@@ -27,6 +30,7 @@ public class Guest {
     private String address;
 
     @OneToMany(mappedBy = "guest")
+    @JsonIgnore
     private List<Reservation> reservations;
 
     public Guest () {

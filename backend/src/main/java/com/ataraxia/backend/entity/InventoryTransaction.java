@@ -17,7 +17,7 @@ public class InventoryTransaction {
     private InventoryItem inventoryItem;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class InventoryTransaction {
     public InventoryTransaction() {
     }
 
-    public InventoryTransaction(InventoryItem inventoryItem, int quantity, TransactionType transactionType, Employee employee, String notes) {
+    public InventoryTransaction(InventoryItem inventoryItem, Integer quantity, TransactionType transactionType, Employee employee, String notes) {
         this.inventoryItem = inventoryItem;
         this.quantity = quantity;
         this.transactionType = transactionType;
@@ -61,11 +61,11 @@ public class InventoryTransaction {
         this.inventoryItem = inventoryItem;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

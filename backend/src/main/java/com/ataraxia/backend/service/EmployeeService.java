@@ -42,12 +42,8 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
-        Long userId = employee.getUser().getId();
-
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException(
-                    "User not found with id: " + userId
-            ));
+        User user = userRepository.findById(employee.getUser().getId())
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
         employee.setUser(user);
         return employeeRepository.save(employee);

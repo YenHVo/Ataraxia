@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "roomtypes")
 public class RoomType {
@@ -23,17 +25,20 @@ public class RoomType {
     private Double basePrice;
 
     @Column (nullable = false)
-    private int capacity;
+    private Integer capacity;
 
     @OneToMany(mappedBy = "roomType")
+    @JsonIgnore
     private List<Room> rooms = new ArrayList<>();
 
     public RoomType() {
     }
 
-    public RoomType(String name, String description) {
+    public RoomType(String name, String description, Double basePrice, Integer capacity) {
         this.name = name;
         this.description = description;
+        this.basePrice = basePrice;
+        this.capacity = capacity;
     }
 
     public Long getId() {

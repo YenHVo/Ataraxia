@@ -57,10 +57,6 @@ public class ReservationService {
     }
 
     public Reservation createReservation(Reservation reservation) {
-        if (reservationRepository.findById(reservation.getId()).isPresent()) {
-            throw new RuntimeException("Reservation already exists");
-        }
-
         Guest guest = guestRepository.findById(reservation.getGuest().getId())
                 .orElseThrow(() -> new RuntimeException("Guest not found"));
 
