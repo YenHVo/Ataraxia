@@ -19,9 +19,6 @@ public class Payment {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Column(nullable = false)
-    private String method;
-
     @Enumerated(EnumType.STRING)
     @Column (nullable = false)
     private PaymentMethod paymentMethod;
