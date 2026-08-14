@@ -46,8 +46,8 @@ public class RoomService {
         return roomRepository.findByStatus(status);
     }
 
-    public List<Room> getRoomsByType(String type) {
-        return roomRepository.findByRoomType(type);
+    public List<Room> getRoomsByType(Long typeId) {
+        return roomRepository.findByRoomType_Id(typeId);
     }
 
     public List<Room> getRoomsByFloor(int floor) {

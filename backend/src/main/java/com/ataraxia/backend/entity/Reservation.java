@@ -2,6 +2,7 @@ package com.ataraxia.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import com.ataraxia.backend.enums.ReservationStatus;
@@ -26,7 +27,7 @@ public class Reservation {
     private ReservationStatus status;
 
     @Column
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     @Column (nullable = false)
     private Integer numberOfGuests;
@@ -45,7 +46,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Guest guest, Room room, LocalDate checkInDate, LocalDate checkOutDate, ReservationStatus status, Double totalPrice, Integer numberOfGuests) {
+    public Reservation(Guest guest, Room room, LocalDate checkInDate, LocalDate checkOutDate, ReservationStatus status, BigDecimal totalPrice, Integer numberOfGuests) {
         this.guest = guest;
         this.room = room;
         this.checkInDate = checkInDate;
@@ -99,11 +100,11 @@ public class Reservation {
         this.status = status;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

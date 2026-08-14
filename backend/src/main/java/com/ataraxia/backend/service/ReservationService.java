@@ -11,7 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ataraxia.backend.enums.ReservationStatus;
 import com.ataraxia.backend.repository.GuestRepository;
 import com.ataraxia.backend.repository.RoomRepository;
-
+import com.ataraxia.backend.repository.RoomTypeRepository;
+import com.ataraxia.backend.entity.RoomType;
+import java.time.LocalDate;
+import com.ataraxia.backend.dto.ReservationRequest;
 import java.util.List;
 
 @Service
@@ -23,10 +26,13 @@ public class ReservationService {
 
     private final RoomRepository roomRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, GuestRepository guestRepository, RoomRepository roomRepository) {
+    private final RoomTypeRepository roomTypeRepository;
+
+    public ReservationService(ReservationRepository reservationRepository, GuestRepository guestRepository, RoomRepository roomRepository, RoomTypeRepository roomTypeRepository) {
         this.reservationRepository = reservationRepository;
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
+        this.roomTypeRepository = roomTypeRepository;
     }
 
     public List<Reservation> getAllReservations() {
@@ -56,16 +62,53 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public Reservation createReservation(Reservation reservation) {
-        Guest guest = guestRepository.findById(reservation.getGuest().getId())
-                .orElseThrow(() -> new RuntimeException("Guest not found"));
+    public Room findAvailableRoom(Long roomTypeId, LocalDate checkInDate, LocalDate checkOutDate) {
+        List<Room> rooms = roomRepository.findByRoomType_Id(roomTypeId);
 
-        Room room = roomRepository.findById(reservation.getRoom().getId())
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+        for (Room room : rooms) {
+            List<Reservation> overlappingReservations = reservationRepository.findOverlappingReservations(room.getId(), checkInDate, checkOutDate);
+            if (overlappingReservations.isEmpty()) {
+                return room; // Return the first available room
+            }
+        }
 
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "No available rooms found for the specified type and dates"
+        );
+    }
+
+    public Reservation createReservation(ReservationRequest request) {
+        if (!request.getCheckInDate().isBefore(request.getCheckOutDate())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Check-in date must be before check-out date"
+            );
+        }
+
+        Guest guest = guestRepository.findById(request.getGuestId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Guest not found with id: " + request.getGuestId()
+                ));
+
+        RoomType roomType = roomTypeRepository.findById(request.getRoomTypeId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Room Type not found with id: " + request.getRoomTypeId()
+                ));
+
+        Room availableRoom = findAvailableRoom(roomType.getId(), request.getCheckInDate(), request.getCheckOutDate());
+
+        Reservation reservation = new Reservation();
         reservation.setGuest(guest);
-        reservation.setRoom(room);
-        
+        reservation.setRoom(availableRoom);
+        reservation.setCheckInDate(request.getCheckInDate());
+        reservation.setCheckOutDate(request.getCheckOutDate());
+        reservation.setStatus(request.getStatus());
+        reservation.setTotalPrice(request.getTotalPrice());
+        reservation.setNumberOfGuests(request.getNumberOfGuests());
+
         return reservationRepository.save(reservation);
     }
 

@@ -31,9 +31,9 @@ public class RoomController {
         return roomService.getRoomByRoomNumber(roomNumber);
     }
 
-    @GetMapping("/type/{roomType}")
-    public List<Room> getRoomsByType(@PathVariable String roomType) {
-        return roomService.getRoomsByType(roomType);
+    @GetMapping("/type/{roomType_id}")
+    public List<Room> getRoomsByType(@PathVariable Long roomType_id) {
+        return roomService.getRoomsByType(roomType_id);
     }
 
     @GetMapping("/status/{status}")

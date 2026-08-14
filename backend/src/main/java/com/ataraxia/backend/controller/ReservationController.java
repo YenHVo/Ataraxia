@@ -1,5 +1,6 @@
 package com.ataraxia.backend.controller;
 
+import com.ataraxia.backend.dto.ReservationRequest;
 import com.ataraxia.backend.entity.Reservation;
 import com.ataraxia.backend.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,8 @@ public class ReservationController {
     }
 
     @PostMapping
-    public Reservation createReservation(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
+    public Reservation createReservation(@RequestBody ReservationRequest request) {
+        return reservationService.createReservation(request);
     }
 
     @PutMapping("/{id}")
