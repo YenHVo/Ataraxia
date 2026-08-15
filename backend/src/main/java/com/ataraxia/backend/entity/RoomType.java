@@ -2,6 +2,7 @@ package com.ataraxia.backend.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ public class RoomType {
     private String description;
     
     @Column
-    private Double basePrice;
+    private BigDecimal basePrice;
 
     @Column (nullable = false)
     private Integer capacity;
@@ -34,7 +35,7 @@ public class RoomType {
     public RoomType() {
     }
 
-    public RoomType(String name, String description, Double basePrice, Integer capacity) {
+    public RoomType(String name, String description, BigDecimal basePrice, Integer capacity) {
         this.name = name;
         this.description = description;
         this.basePrice = basePrice;
@@ -61,11 +62,11 @@ public class RoomType {
         this.description = description;
     }
 
-    public Double getBasePrice() {
+    public BigDecimal getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(Double basePrice) {
+    public void setBasePrice(BigDecimal basePrice) {
         this.basePrice = basePrice;
     }
 

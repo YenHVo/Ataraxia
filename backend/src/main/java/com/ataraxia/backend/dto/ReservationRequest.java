@@ -9,12 +9,9 @@ public class ReservationRequest {
 
     private Long guestId;
     private Long roomTypeId;
-
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-
     private ReservationStatus status;
-    private BigDecimal totalPrice;
     private Integer numberOfGuests;
 
     public Long getGuestId() {
@@ -55,14 +52,6 @@ public class ReservationRequest {
 
     public void setStatus(ReservationStatus status) {
         this.status = status;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     public Integer getNumberOfGuests() {

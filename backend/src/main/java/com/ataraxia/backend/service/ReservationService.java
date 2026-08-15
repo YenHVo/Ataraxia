@@ -16,6 +16,8 @@ import com.ataraxia.backend.entity.RoomType;
 import java.time.LocalDate;
 import com.ataraxia.backend.dto.ReservationRequest;
 import java.util.List;
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class ReservationService {
@@ -62,6 +64,11 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
+    public BigDecimal calculateTotalPrice(RoomType roomType, LocalDate checkInDate, LocalDate checkOutDate) {
+        long numberOfNights = java.time.temporal.ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+        return roomType.getBasePrice().multiply(BigDecimal.valueOf(numberOfNights));
+    }
+
     public Room findAvailableRoom(Long roomTypeId, LocalDate checkInDate, LocalDate checkOutDate) {
         List<Room> rooms = roomRepository.findByRoomType_Id(roomTypeId);
 
@@ -99,6 +106,7 @@ public class ReservationService {
                 ));
 
         Room availableRoom = findAvailableRoom(roomType.getId(), request.getCheckInDate(), request.getCheckOutDate());
+        BigDecimal totalPrice = calculateTotalPrice(roomType, request.getCheckInDate(), request.getCheckOutDate());
 
         Reservation reservation = new Reservation();
         reservation.setGuest(guest);
@@ -106,8 +114,8 @@ public class ReservationService {
         reservation.setCheckInDate(request.getCheckInDate());
         reservation.setCheckOutDate(request.getCheckOutDate());
         reservation.setStatus(request.getStatus());
-        reservation.setTotalPrice(request.getTotalPrice());
         reservation.setNumberOfGuests(request.getNumberOfGuests());
+        reservation.setTotalPrice(totalPrice);
 
         return reservationRepository.save(reservation);
     }
