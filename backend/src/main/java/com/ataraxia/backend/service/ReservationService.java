@@ -65,7 +65,7 @@ public class ReservationService {
     }
 
     public BigDecimal calculateTotalPrice(RoomType roomType, LocalDate checkInDate, LocalDate checkOutDate) {
-        long numberOfNights = java.time.temporal.ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+        long numberOfNights = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         return roomType.getBasePrice().multiply(BigDecimal.valueOf(numberOfNights));
     }
 
@@ -83,6 +83,42 @@ public class ReservationService {
                 HttpStatus.NOT_FOUND,
                 "No available rooms found for the specified type and dates"
         );
+    }
+
+    public Reservation updateReservationStatus(Long id, ReservationStatus newStatus) {
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Reservation not found with id: " + id
+                ));
+
+        ReservationStatus currentStatus = reservation.getStatus();
+        if (!isValidStatusTransition(currentStatus, newStatus)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid status transition from " + currentStatus + " to " + newStatus
+            );
+        }
+
+        reservation.setStatus(newStatus);
+        return reservationRepository.save(reservation);
+    }
+
+    private boolean isValidStatusTransition(ReservationStatus currentStatus, ReservationStatus newStatus) {
+        switch (currentStatus) {
+            case PENDING:
+                return newStatus == ReservationStatus.CONFIRMED || newStatus == ReservationStatus.CANCELLED;
+            case CONFIRMED:
+                return newStatus == ReservationStatus.CHECKED_IN || newStatus == ReservationStatus.CANCELLED;
+            case CHECKED_IN:
+                return newStatus == ReservationStatus.COMPLETED;
+            case COMPLETED:
+                return false; // No transitions allowed from COMPLETED
+            case CANCELLED:
+                return false; // No transitions allowed from CANCELLED
+            default:
+                return false;
+        }
     }
 
     public Reservation createReservation(ReservationRequest request) {
@@ -113,7 +149,7 @@ public class ReservationService {
         reservation.setRoom(availableRoom);
         reservation.setCheckInDate(request.getCheckInDate());
         reservation.setCheckOutDate(request.getCheckOutDate());
-        reservation.setStatus(request.getStatus());
+        reservation.setStatus(ReservationStatus.PENDING);
         reservation.setNumberOfGuests(request.getNumberOfGuests());
         reservation.setTotalPrice(totalPrice);
 

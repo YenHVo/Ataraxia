@@ -45,6 +45,13 @@ public class PaymentService {
     }
 
     public Payment createPayment(Payment payment) {
+        if (payment.getAmount() == null || payment.getAmount().doubleValue() <= 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Payment amount must be greater than zero"
+            );
+        }
+
         Reservation reservation = reservationRepository.findById(payment.getReservation().getId())
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
 

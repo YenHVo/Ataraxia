@@ -6,6 +6,7 @@ import com.ataraxia.backend.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import com.ataraxia.backend.enums.ReservationStatus;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -44,7 +45,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public Reservation createReservation(@RequestBody ReservationRequest request) {
+    public Reservation createReservation(@Valid @RequestBody ReservationRequest request) {
         return reservationService.createReservation(request);
     }
 

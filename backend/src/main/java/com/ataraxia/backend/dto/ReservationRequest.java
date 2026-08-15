@@ -1,17 +1,25 @@
 package com.ataraxia.backend.dto;
 
 import com.ataraxia.backend.enums.ReservationStatus;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import jakarta.validation.constraints.*;
 
 public class ReservationRequest {
 
+    @NotNull
     private Long guestId;
+
+    @NotNull
     private Long roomTypeId;
+
+    @NotNull
     private LocalDate checkInDate;
+
+    @NotNull
     private LocalDate checkOutDate;
-    private ReservationStatus status;
+
+    @NotNull
+    @Positive
     private Integer numberOfGuests;
 
     public Long getGuestId() {
@@ -44,14 +52,6 @@ public class ReservationRequest {
 
     public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
-    }
-
-    public ReservationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ReservationStatus status) {
-        this.status = status;
     }
 
     public Integer getNumberOfGuests() {
