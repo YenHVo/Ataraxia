@@ -113,9 +113,9 @@ public class ReservationService {
             case CHECKED_IN:
                 return newStatus == ReservationStatus.COMPLETED;
             case COMPLETED:
-                return false; // No transitions allowed from COMPLETED
+                return false; 
             case CANCELLED:
-                return false; // No transitions allowed from CANCELLED
+                return false; 
             default:
                 return false;
         }

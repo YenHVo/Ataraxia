@@ -4,6 +4,7 @@ import com.ataraxia.backend.entity.Role;
 import com.ataraxia.backend.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -32,7 +33,7 @@ public class RoleController {
     }
 
     @PostMapping
-    public Role createRole(@RequestBody Role role) {
+    public Role createRole(@RequestBody @Valid Role role) {
         return roleService.createRole(role);
     }
 

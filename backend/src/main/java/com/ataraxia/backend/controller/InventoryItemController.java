@@ -4,6 +4,7 @@ import com.ataraxia.backend.entity.InventoryItem;
 import com.ataraxia.backend.service.InventoryItemService;
 import java.util.List;
 import com.ataraxia.backend.enums.InventoryCategory;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/inventory-items")
@@ -42,12 +43,12 @@ public class InventoryItemController {
     }
 
     @PostMapping
-    public InventoryItem createInventoryItem(@RequestBody InventoryItem inventoryItem) {
+    public InventoryItem createInventoryItem(@RequestBody @Valid InventoryItem inventoryItem) {
         return inventoryItemService.createInventoryItem(inventoryItem);
     }
 
     @PutMapping("/{id}")
-    public InventoryItem updateInventoryItem(@PathVariable Long id, @RequestBody InventoryItem updatedInventoryItem) {
+    public InventoryItem updateInventoryItem(@PathVariable Long id, @RequestBody @Valid InventoryItem updatedInventoryItem) {
         return inventoryItemService.updateInventoryItem(id, updatedInventoryItem);
     }
 

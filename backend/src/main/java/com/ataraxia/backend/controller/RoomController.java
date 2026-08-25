@@ -5,6 +5,7 @@ import com.ataraxia.backend.service.RoomService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import com.ataraxia.backend.enums.RoomStatus;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -47,12 +48,12 @@ public class RoomController {
     }
 
     @PostMapping
-    public Room createRoom(@RequestBody Room room) {
+    public Room createRoom(@RequestBody @Valid Room room) {
         return roomService.createRoom(room);
     }
 
     @PutMapping("/{id}")
-    public Room updateRoom(@PathVariable Long id, @RequestBody Room updatedRoom) {
+    public Room updateRoom(@PathVariable Long id, @RequestBody @Valid Room updatedRoom) {
         return roomService.updateRoom(id, updatedRoom);
     }
 

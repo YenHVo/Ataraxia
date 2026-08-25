@@ -50,6 +50,15 @@ public class GuestService {
                     "Guest not found with id: " + id
             ));
 
+        if (!existingGuest.getEmail().equals(updatedGuest.getEmail())) {
+            if (guestRepository.findByEmail(updatedGuest.getEmail()).isPresent()) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Email is already in use: " + updatedGuest.getEmail()
+                );
+            }
+        }
+
         existingGuest.setFirstName(updatedGuest.getFirstName());
         existingGuest.setLastName(updatedGuest.getLastName());
         existingGuest.setEmail(updatedGuest.getEmail());

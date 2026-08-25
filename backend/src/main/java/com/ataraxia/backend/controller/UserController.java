@@ -4,7 +4,7 @@ import com.ataraxia.backend.entity.User;
 import com.ataraxia.backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,12 +38,12 @@ public class UserController {
     }
     
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody @Valid User user) {
         return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    public User updateUser(@PathVariable Long id, @RequestBody @Valid User updatedUser) {
         return userService.updateUser(id, updatedUser);
     }
 

@@ -4,6 +4,7 @@ import com.ataraxia.backend.enums.InventoryCategory;
 import com.ataraxia.backend.enums.InventoryUnit;
 import java.math.BigDecimal;
 import java.util.Objects;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "inventory_items")
@@ -24,9 +25,11 @@ public class InventoryItem {
     private InventoryCategory category;
 
     @Column(nullable = false)
+    @PositiveOrZero
     private Integer quantity;
 
     @Column(nullable = false)
+    @PositiveOrZero
     private BigDecimal unitCost;
 
     @Enumerated(EnumType.STRING)
@@ -34,6 +37,7 @@ public class InventoryItem {
     private InventoryUnit unit;
 
     @Column(nullable = false)
+    @PositiveOrZero
     private Integer reorderLevel;
 
     @ManyToOne

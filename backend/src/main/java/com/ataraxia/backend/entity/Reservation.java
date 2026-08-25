@@ -1,11 +1,14 @@
 package com.ataraxia.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import com.ataraxia.backend.enums.ReservationStatus;
+import jakarta.validation.constraints.*;
 
 
 @Entity
@@ -27,9 +30,11 @@ public class Reservation {
     private ReservationStatus status;
 
     @Column
+    @PositiveOrZero
     private BigDecimal totalPrice;
 
     @Column (nullable = false)
+    @Positive
     private Integer numberOfGuests;
 
     @Column(nullable = false, updatable = false)

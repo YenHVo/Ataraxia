@@ -3,6 +3,7 @@ import com.ataraxia.backend.entity.Supplier;
 import com.ataraxia.backend.service.SupplierService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -21,7 +22,7 @@ public class SupplierController {
     }
 
     @PostMapping
-    public Supplier createSupplier(@RequestBody Supplier supplier) {
+    public Supplier createSupplier(@RequestBody @Valid Supplier supplier) {
         return supplierService.createSupplier(supplier);
     }
 
@@ -41,7 +42,7 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public Supplier updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
+    public Supplier updateSupplier(@PathVariable Long id, @RequestBody @Valid Supplier supplier) {
         return supplierService.updateSupplier(id, supplier);
     }
 

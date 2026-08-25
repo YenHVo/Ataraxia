@@ -3,7 +3,8 @@ package com.ataraxia.backend.controller;
 import org.springframework.web.bind.annotation.*;
 import com.ataraxia.backend.entity.Guest;
 import com.ataraxia.backend.service.GuestService;
-import java.util.List;  
+import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/guests")
@@ -32,12 +33,12 @@ public class GuestController {
     }
 
     @PostMapping
-    public Guest createGuest(@RequestBody Guest guest) {
+    public Guest createGuest(@RequestBody @Valid Guest guest) {
         return guestService.createGuest(guest);
     }
 
     @PutMapping("/{id}")
-    public Guest updateGuest(@PathVariable Long id, @RequestBody Guest updatedGuest) {
+    public Guest updateGuest(@PathVariable Long id, @RequestBody @Valid Guest updatedGuest) {
         return guestService.updateGuest(id, updatedGuest);
     }
 

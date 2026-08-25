@@ -1,9 +1,7 @@
 package com.ataraxia.backend.entity;
 import jakarta.persistence.*;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
 
 @Entity

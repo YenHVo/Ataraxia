@@ -41,6 +41,20 @@ public class EmployeeService {
         return employeeRepository.findByPositionContainingIgnoreCase(position);
     }
 
+    public Employee getEmployeeByUserId(Long userId) {
+        return employeeRepository.findByUser_Id(userId).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Employee not found with user id: " + userId
+        ));
+    }
+
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Employee not found with email: " + email
+        ));
+    }
+
     public Employee createEmployee(Employee employee) {
         User user = userRepository.findById(employee.getUser().getId())
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -56,6 +70,39 @@ public class EmployeeService {
                     "Employee not found with id: " + id
             ));
 
+        String newEmail = updatedEmployee.getEmail();
+        if (!existingEmployee.getEmail().equals(newEmail)) {
+            // Check Employee emails
+            employeeRepository.findByEmail(newEmail)
+                .ifPresent(employee -> {
+                    if (!employee.getId().equals(id)) {
+                        throw new ResponseStatusException(
+                            HttpStatus.CONFLICT,
+                            "Employee with email " + newEmail + " already exists"
+                        );
+                    }
+                });
+
+            // Check User emails
+            userRepository.findByEmail(newEmail)
+                .ifPresent(user -> {
+                    if (!user.getId().equals(existingEmployee.getUser().getId())) {
+                        throw new ResponseStatusException(
+                            HttpStatus.CONFLICT,
+                            "User with email " + newEmail + " already exists"
+                        );
+                    }
+                });
+
+            // Update Employee email
+            existingEmployee.setEmail(newEmail);
+
+            // Update associated User email
+            if (existingEmployee.getUser() != null) {
+                existingEmployee.getUser().setEmail(newEmail);
+            }
+        }
+            
         existingEmployee.setFirstName(updatedEmployee.getFirstName());
         existingEmployee.setLastName(updatedEmployee.getLastName());
         existingEmployee.setEmail(updatedEmployee.getEmail());

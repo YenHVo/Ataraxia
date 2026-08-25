@@ -5,6 +5,7 @@ import com.ataraxia.backend.service.RoomTypeService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/room-types")
@@ -23,7 +24,7 @@ public class RoomTypeController {
     }
 
     @PostMapping
-    public RoomType createRoomType(@RequestBody RoomType roomType) {
+    public RoomType createRoomType(@RequestBody @Valid RoomType roomType) {
         return roomTypeService.createRoomType(roomType);
     }
 
@@ -43,7 +44,7 @@ public class RoomTypeController {
     }
 
     @PutMapping("/{id}")
-    public RoomType updateRoomType(@PathVariable Long id, @RequestBody RoomType roomType) {
+    public RoomType updateRoomType(@PathVariable Long id, @RequestBody @Valid RoomType roomType) {
         return roomTypeService.updateRoomType(id, roomType);
     }
 

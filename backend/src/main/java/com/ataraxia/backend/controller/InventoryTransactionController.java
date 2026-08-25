@@ -4,6 +4,7 @@ import com.ataraxia.backend.entity.InventoryTransaction;
 import com.ataraxia.backend.service.InventoryTransactionService;
 import java.util.List;
 import com.ataraxia.backend.enums.TransactionType;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/inventory-transactions")
@@ -51,12 +52,12 @@ public class InventoryTransactionController {
     }
 
     @PostMapping
-    public InventoryTransaction createInventoryTransaction(@RequestBody InventoryTransaction inventoryTransaction) {
+    public InventoryTransaction createInventoryTransaction(@RequestBody @Valid InventoryTransaction inventoryTransaction) {
         return inventoryTransactionService.createInventoryTransaction(inventoryTransaction);
     }
 
     @PutMapping("/{id}")
-    public InventoryTransaction updateInventoryTransaction(@PathVariable Long id, @RequestBody InventoryTransaction updatedInventoryTransaction) {
+    public InventoryTransaction updateInventoryTransaction(@PathVariable Long id, @RequestBody @Valid InventoryTransaction updatedInventoryTransaction) {
         return inventoryTransactionService.updateInventoryTransaction(id, updatedInventoryTransaction);
     }
 

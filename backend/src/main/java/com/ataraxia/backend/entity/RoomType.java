@@ -5,7 +5,7 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Objects;
-
+import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -23,9 +23,11 @@ public class RoomType {
     private String description;
     
     @Column
+    @PositiveOrZero
     private BigDecimal basePrice;
 
     @Column (nullable = false)
+    @PositiveOrZero
     private Integer capacity;
 
     @OneToMany(mappedBy = "roomType")

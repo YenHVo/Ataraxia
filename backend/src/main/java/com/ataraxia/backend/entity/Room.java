@@ -3,6 +3,7 @@ import com.ataraxia.backend.enums.RoomStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.util.Objects;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Room {
     private String roomNumber;
 
     @Column(nullable = false)
+    @Positive
     private Integer floor;
 
     @Enumerated(EnumType.STRING)

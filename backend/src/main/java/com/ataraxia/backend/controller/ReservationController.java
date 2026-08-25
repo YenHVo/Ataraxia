@@ -50,7 +50,7 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public Reservation updateReservation(@PathVariable Long id, @RequestBody Reservation updatedReservation) {
+    public Reservation updateReservation(@PathVariable Long id, @RequestBody @Valid Reservation updatedReservation) {
         return reservationService.updateReservation(id, updatedReservation);
     }
 

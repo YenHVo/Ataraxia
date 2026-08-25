@@ -1,6 +1,5 @@
 package com.ataraxia.backend.dto;
 
-import com.ataraxia.backend.enums.ReservationStatus;
 import java.time.LocalDate;
 import jakarta.validation.constraints.*;
 

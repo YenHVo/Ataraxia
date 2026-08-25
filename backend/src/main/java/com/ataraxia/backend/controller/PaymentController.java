@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import com.ataraxia.backend.service.PaymentService;
 import com.ataraxia.backend.entity.Payment;
 import java.util.List;
-
+import jakarta.validation.Valid;
 import com.ataraxia.backend.enums.PaymentStatus;
 
 
@@ -38,10 +38,9 @@ public class PaymentController {
     public List<Payment> getPaymentsByStatus(@PathVariable PaymentStatus status) {
         return paymentService.getPaymentsByStatus(status);
     }
-    
 
     @PostMapping
-    public Payment createPayment(@RequestBody Payment payment) {
+    public Payment createPayment(@RequestBody @Valid Payment payment) {
         return paymentService.createPayment(payment);
     }
 
