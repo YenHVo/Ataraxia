@@ -54,6 +54,10 @@ public class RoomService {
         return roomRepository.findByFloor(floor);
     }
 
+    public List<Room> getAvailableRoomsByType(Long typeId) {
+        return roomRepository.findByRoomType_IdAndStatus(typeId, RoomStatus.AVAILABLE);
+    }
+
     public void deleteRoom(Long id) {
         roomRepository.deleteById(id);
     }
@@ -64,7 +68,10 @@ public class RoomService {
         }
 
         RoomType roomType = roomTypeRepository.findById(room.getRoomType().getId())
-                .orElseThrow(() -> new RuntimeException("Room Type not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Roomtype not found with id: " + room.getRoomType().getId()
+                ));
 
         room.setRoomType(roomType);
         return roomRepository.save(room);
@@ -77,10 +84,25 @@ public class RoomService {
                     "Room not found with id: " + id
             ));
 
+        if (!existingRoom.getRoomNumber().equals(updatedRoom.getRoomNumber())) {
+            if (roomRepository.findByRoomNumber(updatedRoom.getRoomNumber()).isPresent()) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Room number is already in use: " + updatedRoom.getRoomNumber()
+                );
+            }
+        }
+
+        RoomType roomType = roomTypeRepository.findById(updatedRoom.getRoomType().getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Roomtype not found with id: " + updatedRoom.getRoomType().getId()
+                ));
+
         existingRoom.setRoomNumber(updatedRoom.getRoomNumber());
         existingRoom.setFloor(updatedRoom.getFloor());
         existingRoom.setStatus(updatedRoom.getStatus());
-        existingRoom.setRoomType(updatedRoom.getRoomType());
+        existingRoom.setRoomType(roomType);
 
         return roomRepository.save(existingRoom);
     }

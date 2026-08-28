@@ -54,6 +54,15 @@ public class SupplierService {
                     "Supplier not found with id: " + id
             ));
 
+        if (!existingSupplier.getEmail().equals(updatedSupplier.getEmail())) {
+            if (supplierRepository.findByEmail(updatedSupplier.getEmail()).isPresent()) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Email is already in use: " + updatedSupplier.getEmail()
+                );
+            }
+        }
+
         existingSupplier.setName(updatedSupplier.getName());
         existingSupplier.setEmail(updatedSupplier.getEmail());
         existingSupplier.setPhone(updatedSupplier.getPhone());

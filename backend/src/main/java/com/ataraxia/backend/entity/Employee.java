@@ -16,9 +16,6 @@ public class Employee {
     @Column (nullable = false)
     private String lastName;
 
-    @Column (nullable = false, unique = true)
-    private String email;
-
     @Column
     private String phone;
 
@@ -41,10 +38,9 @@ public class Employee {
     public Employee () {
     }
 
-    public Employee(String firstName, String lastName, String email, String phone, String address, LocalDate hireDate, String position, Double salary, User user) {
+    public Employee(String firstName, String lastName, String phone, String address, LocalDate hireDate, String position, Double salary, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.phone = phone;
         this.address = address;
         this.hireDate = hireDate;
@@ -71,14 +67,6 @@ public class Employee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
@@ -148,7 +136,6 @@ public class Employee {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", hireDate=" + hireDate +

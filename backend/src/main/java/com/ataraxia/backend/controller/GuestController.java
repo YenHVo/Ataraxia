@@ -32,6 +32,11 @@ public class GuestController {
         return guestService.getGuestByEmail(email);
     }
 
+    @GetMapping("/lastname/{lastName}")
+    public List<Guest> getGuestsByLastName(@PathVariable String lastName) {
+        return guestService.getGuestsByLastName(lastName);
+    }
+
     @PostMapping
     public Guest createGuest(@RequestBody @Valid Guest guest) {
         return guestService.createGuest(guest);

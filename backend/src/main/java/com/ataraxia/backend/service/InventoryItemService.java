@@ -47,7 +47,10 @@ public class InventoryItemService {
 
     public InventoryItem createInventoryItem(InventoryItem inventoryItem) {
         Supplier supplier = supplierRepository.findById(inventoryItem.getSupplier().getId())
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Supplier not found with id: " + inventoryItem.getSupplier().getId()
+                ));
 
         inventoryItem.setSupplier(supplier);
         return inventoryItemRepository.save(inventoryItem);
@@ -60,6 +63,12 @@ public class InventoryItemService {
                     "Inventory item not found with id: " + id
             ));
 
+        Supplier supplier = supplierRepository.findById(updatedInventoryItem.getSupplier().getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Supplier not found with id: " + updatedInventoryItem.getSupplier().getId()
+                ));
+
         existingInventoryItem.setName(updatedInventoryItem.getName());
         existingInventoryItem.setDescription(updatedInventoryItem.getDescription());
         existingInventoryItem.setCategory(updatedInventoryItem.getCategory());
@@ -67,7 +76,7 @@ public class InventoryItemService {
         existingInventoryItem.setUnitCost(updatedInventoryItem.getUnitCost());
         existingInventoryItem.setUnit(updatedInventoryItem.getUnit());
         existingInventoryItem.setReorderLevel(updatedInventoryItem.getReorderLevel());
-        existingInventoryItem.setSupplier(updatedInventoryItem.getSupplier());
+        existingInventoryItem.setSupplier(supplier);
 
         return inventoryItemRepository.save(existingInventoryItem);
     }

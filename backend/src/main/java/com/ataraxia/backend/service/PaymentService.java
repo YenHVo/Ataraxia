@@ -45,15 +45,11 @@ public class PaymentService {
     }
 
     public Payment createPayment(Payment payment) {
-        if (payment.getAmount() == null || payment.getAmount().doubleValue() <= 0) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Payment amount must be greater than zero"
-            );
-        }
-
         Reservation reservation = reservationRepository.findById(payment.getReservation().getId())
-                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Reservation not found with id: " + payment.getReservation().getId()
+                ));
 
         payment.setReservation(reservation);
         return paymentRepository.save(payment);
@@ -68,15 +64,21 @@ public class PaymentService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Payment not found with id: " + id
+                )); 
+
+
+        Reservation reservation = reservationRepository.findById(updatedPayment.getReservation().getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Reservation not found with id: " + updatedPayment.getReservation().getId()
                 ));
 
         existingPayment.setAmount(updatedPayment.getAmount());
         existingPayment.setPaymentMethod(updatedPayment.getPaymentMethod());
         existingPayment.setPaymentStatus(updatedPayment.getPaymentStatus());
-        existingPayment.setReservation(updatedPayment.getReservation());
+        existingPayment.setReservation(reservation); 
 
         return paymentRepository.save(existingPayment);
     }
-
 
 }

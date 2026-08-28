@@ -56,11 +56,6 @@ public class InventoryTransactionController {
         return inventoryTransactionService.createInventoryTransaction(inventoryTransaction);
     }
 
-    @PutMapping("/{id}")
-    public InventoryTransaction updateInventoryTransaction(@PathVariable Long id, @RequestBody @Valid InventoryTransaction updatedInventoryTransaction) {
-        return inventoryTransactionService.updateInventoryTransaction(id, updatedInventoryTransaction);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteInventoryTransaction(@PathVariable Long id) {
         inventoryTransactionService.deleteInventoryTransaction(id);

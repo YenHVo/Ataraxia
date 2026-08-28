@@ -59,6 +59,15 @@ public class UserService {
                     "User not found with id: " + id
             ));
         
+        if (!existingUser.getEmail().equals(updatedUser.getEmail())) {
+            if (userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Email is already in use: " + updatedUser.getEmail()
+                );
+            }
+        }
+        
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setPassword(updatedUser.getPassword());
         existingUser.setActive(updatedUser.getActive());

@@ -55,6 +55,15 @@ public class RoomTypeService {
                     "Room type not found with id: " + id
             ));
 
+        if (!existingRoomType.getName().equals(updatedRoomType.getName())) {
+            if (roomTypeRepository.findByNameContainingIgnoreCase(updatedRoomType.getName()).isPresent()) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Room name is already in use: " + updatedRoomType.getName()
+                );
+            }
+        }
+
         existingRoomType.setName(updatedRoomType.getName());
         existingRoomType.setBasePrice(updatedRoomType.getBasePrice());
         existingRoomType.setCapacity(updatedRoomType.getCapacity());

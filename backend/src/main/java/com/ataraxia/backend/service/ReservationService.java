@@ -163,11 +163,22 @@ public class ReservationService {
                     "Reservation not found with id: " + id
             ));
 
-        existingReservation.setGuest(updatedReservation.getGuest());
-        existingReservation.setRoom(updatedReservation.getRoom());
+        Guest guest = guestRepository.findById(updatedReservation.getGuest().getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Guest not found with id: " + updatedReservation.getGuest().getId()
+                ));
+
+        Room room = roomRepository.findById(updatedReservation.getRoom().getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Room not found with id: " + updatedReservation.getRoom().getId()
+                ));
+
+        existingReservation.setGuest(guest);
+        existingReservation.setRoom(room);
         existingReservation.setCheckInDate(updatedReservation.getCheckInDate());
         existingReservation.setCheckOutDate(updatedReservation.getCheckOutDate());
-        existingReservation.setStatus(updatedReservation.getStatus());
         existingReservation.setTotalPrice(updatedReservation.getTotalPrice());
         existingReservation.setNumberOfGuests(updatedReservation.getNumberOfGuests());
 

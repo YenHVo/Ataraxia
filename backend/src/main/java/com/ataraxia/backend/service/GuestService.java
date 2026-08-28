@@ -43,6 +43,10 @@ public class GuestService {
         return guestRepository.save(guest);
     }
 
+    public List<Guest> getGuestsByLastName(String lastName) {
+        return guestRepository.findByLastNameContainingIgnoreCase(lastName);
+    }
+
     public Guest updateGuest(Long id, Guest updatedGuest) {
         Guest existingGuest = guestRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(

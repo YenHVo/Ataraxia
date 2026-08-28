@@ -14,4 +14,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findByStatus(RoomStatus status);
 
     List<Room> findByFloor(int floor);
+
+    List<Room> findByRoomType_IdAndStatus(Long roomTypeId, RoomStatus status);
 }

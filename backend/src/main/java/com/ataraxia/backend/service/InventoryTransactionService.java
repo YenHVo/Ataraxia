@@ -56,7 +56,6 @@ public class InventoryTransactionService {
     }
 
     public InventoryTransaction createInventoryTransaction(InventoryTransaction inventoryTransaction) {
-
         Employee employee = employeeRepository.findById(inventoryTransaction.getEmployee().getId())
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
@@ -70,22 +69,6 @@ public class InventoryTransactionService {
 
     public void deleteInventoryTransaction(Long id) {
         inventoryTransactionRepository.deleteById(id);
-    }
-
-    public InventoryTransaction updateInventoryTransaction(Long id, InventoryTransaction updatedInventoryTransaction) {
-        InventoryTransaction existingInventoryTransaction = inventoryTransactionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Inventory Transaction not found with id: " + id
-                ));
-
-        existingInventoryTransaction.setInventoryItem(updatedInventoryTransaction.getInventoryItem());
-        existingInventoryTransaction.setQuantity(updatedInventoryTransaction.getQuantity());
-        existingInventoryTransaction.setTransactionType(updatedInventoryTransaction.getTransactionType());
-        existingInventoryTransaction.setEmployee(updatedInventoryTransaction.getEmployee());
-        existingInventoryTransaction.setNotes(updatedInventoryTransaction.getNotes());
-
-        return inventoryTransactionRepository.save(existingInventoryTransaction);
     }
 
 }
